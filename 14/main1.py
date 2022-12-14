@@ -1,4 +1,6 @@
 import sys
+
+
 class Line:
     def __init__(self, s):
         pts = []
@@ -43,48 +45,31 @@ def draw(rock, sand, abyss, producer, bounding_box):
 if __name__ == "__main__":
     with open('case1.in') as fin:
         lines = [Line(e.strip()) for e in fin.readlines()]
-        rocks = set()
+        rock_sand = set()
         for line in lines:
             for p in line.pts:
-                rocks.add(p)
-        x_min = min([r[0] for r in rocks]) - 1
-        x_max = max([r[0] for r in rocks]) + 1
-        y_min = min(0, min([r[1] for r in rocks]) - 1)
-        y_max = max([r[1] for r in rocks]) + 1
-        aby = set(get_pts(x_min, y_max, x_max, y_max))
-        sand, sand_producer = set(), (500, 0)
+                rock_sand.add(p)
+        x_min = min([r[0] for r in rock_sand]) - 1
+        x_max = max([r[0] for r in rock_sand]) + 1
+        y_min = min(0, min([r[1] for r in rock_sand]) - 1)
+        y_max = max([r[1] for r in rock_sand]) + 1
 
     flag, turn = True, 0
-    while flag:
-        if sand_producer not in sand:
-            sand.add(sand_producer)
-        sand_moved = True
-        while flag and sand_moved:
-            sand_moved = False
-            new_sand = set()
-            # print(f"Sand: {sand}")
-            for s in sorted(list(sand), key=lambda r: (-r[1], -r[0])):
-                down, diag_l, diag_r = (s[0], s[1] + 1), (s[0] - 1, s[1] + 1), (s[0] + 1, s[1] + 1)
-                # print(f"Cur sand = {s} | new_sand = {new_sand} ;; down = {down} / diag = {diag_l}")
-                if down not in rocks and down not in new_sand:
-                    new_sand.add(down)
-                    sand_moved = True
-                    if down in aby:
-                        flag = False
-                elif diag_l not in rocks and diag_l not in new_sand:
-                    new_sand.add(diag_l)
-                    sand_moved = True
-                    if diag_l in aby:
-                        flag = False
-                elif diag_r not in rocks and diag_r not in new_sand:
-                    new_sand.add(diag_r)
-                    sand_moved = True
-                    if diag_r in aby:
-                        flag = False
-                else:
-                    new_sand.add(s)  # Stay where you are
-            #draw(rocks, new_sand, aby, sand_producer, (x_min, x_max, y_min, y_max))
-            sand = new_sand
-        if flag:
-            turn += 1
-    print(turn)
+    while True:
+        x, y = (500, 0)  # producer
+        if (x, y) in rock_sand:
+            break
+        while True:
+            if y > y_max:
+                print(turn)
+                sys.exit(0)
+            if (x, 1 + y) not in rock_sand:
+                y += 1
+            elif (x - 1, 1 + y) not in rock_sand:
+                (x, y) = (x - 1, 1 + y)
+            elif (1 + x, 1 + y) not in rock_sand:
+                (x, y) = (1 + x, 1 + y)
+            else:
+                rock_sand.add((x, y))
+                turn += 1
+                break
