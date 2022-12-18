@@ -1,4 +1,3 @@
-# No need today
 class Block:
     def __init__(self, shape, x, y):
         self.x = x
