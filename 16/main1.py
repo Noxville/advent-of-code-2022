@@ -23,7 +23,7 @@ if __name__ == "__main__":
             for j in valves:
                 dist[i, j] = min(dist[i, j], dist[i, k] + dist[k, j])
 
-
+    
     @functools.cache
     def recurse(time_left, start, remaining):
         best = 0
@@ -33,7 +33,6 @@ if __name__ == "__main__":
             best = max(best, flows[node] * (time_left - 1 - dist[start, node]) + \
                        recurse(time_left - 1 - dist[start, node], node, frozenset(remaining - {node})))
         return best
-
 
     positive_flows = [v for v, rate in flows.items() if rate]  # We don't travel unless we can make it flow!
     print(recurse(30, 'AA', frozenset(positive_flows)))
