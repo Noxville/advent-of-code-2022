@@ -41,7 +41,7 @@ def prt(grid, xx, yy):
         print(line)
 
 
-def create_graph(p1=True):
+def create_graph(grid, p1=True):
     G = {}
 
     overall_mx_x, overall_mx_y = 0, 0
@@ -103,7 +103,7 @@ def create_graph(p1=True):
 
 
 def solve(grid, instructs, p1=True):
-    G = create_graph(p1)
+    G = create_graph(grid, p1)
 
     x, y, direction = grid[0].index('.'), 0, 'E'
 
