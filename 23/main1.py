@@ -49,7 +49,7 @@ def no_neigh(elves, _x, _y):
     return True
 
 
-def pr(elves, actually_print=True):
+def pr(elves):
     min_x = min([x for x, y in elves])
     max_x = max([x for x, y in elves])
     min_y = min([y for x, y in elves])
@@ -58,10 +58,6 @@ def pr(elves, actually_print=True):
         line = ""
         for xx in range(min_x, 1 + max_x):
             line += '#' if (xx, yy) in elves else '.'
-        if actually_print:
-            print(line)
-    if actually_print:
-        print()
     return ((max_x - min_x + 1) * (max_y - min_y + 1)) - len(elves)
 
 
@@ -89,7 +85,7 @@ def solve(elves):
         elves = new_elves
 
         if r == 9:
-            print(pr(elves, False))
+            print(pr(elves))
         if not moved:
             print(1 + r)
             break
